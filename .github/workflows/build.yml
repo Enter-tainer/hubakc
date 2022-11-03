@@ -15,7 +15,7 @@ jobs:
       - uses: Swatinem/rust-cache@v1
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.asset_name }}
+          name: hubakc
           path: target/release/hubakc
       - name: Release
         uses: svenstaro/upload-release-action@v2
