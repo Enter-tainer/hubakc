@@ -1,0 +1,4 @@
+# ttl = 600
+cache_folder = "/tmp/hubakc"
+[user_map]
+mgt = "Enter-tainer"
