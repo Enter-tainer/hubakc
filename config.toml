@@ -1,4 +1,5 @@
-ttl = 600
+ttl = 3600
+timeout = 15
 cache_folder = "/tmp/hubakc"
 [user_map]
 mgt = "Enter-tainer"

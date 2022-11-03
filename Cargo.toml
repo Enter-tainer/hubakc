@@ -1,6 +1,6 @@
 [package]
 name = "hubakc"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -10,6 +10,7 @@ clap = { version = "4.0.18", features = [ "derive" ]}
 ureq = "2.5.0"
 serde = { version = "1.0", features = ["derive"] }
 toml = "0.5.9"
+anyhow = "1.0.66"
 
 [profile.release]
 opt-level = "z"
