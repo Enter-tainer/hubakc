@@ -8,10 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --release
       - name: Set up cargo cache
         uses: actions/cache@v3
         continue-on-error: false
@@ -24,6 +20,10 @@ jobs:
             target/            
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo-
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release
       - uses: actions/upload-artifact@v2
         with:
           name: hubakc
