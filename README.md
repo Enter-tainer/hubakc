@@ -2,7 +2,7 @@
 
 heavily inspired by https://github.com/sequencer/gitakc
 
-1. Put the config.yml in `/etc/hubakc/config.toml`
+1. Put the config.toml in `/etc/hubakc/config.toml`, and add user map.
 2. Put the binary in `/usr/local/bin/hubakc`
 3. edit sshd config and set `AuthorizedKeysCommand /usr/local/bin/hubakc`
 
@@ -11,7 +11,8 @@ heavily inspired by https://github.com/sequencer/gitakc
 Given the config file `config.toml`
 
 ```toml
-ttl = 600
+ttl = 3600
+timeout = 15
 cache_folder = "/tmp/hubakc"
 [user_map]
 mgt = "Enter-tainer"
