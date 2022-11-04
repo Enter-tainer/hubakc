@@ -1,20 +1,12 @@
-use anyhow::{Context, Result};
-use clap::Parser;
+use anyhow::{ensure, Context, Result};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::HashMap,
-    fs::{self},
+    fs,
     path::{Path, PathBuf},
-    time::{Duration, SystemTime},
+    time::SystemTime,
 };
 const CONFIG_PATH: &str = "/etc/hubakc/config.toml";
-
-#[derive(Parser, Debug)]
-#[command(author, version, about, long_about = None)]
-struct Args {
-    #[arg(required(true))]
-    user_name: String,
-}
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Config {
@@ -30,7 +22,7 @@ impl Default for Config {
             cache_folder: "/tmp/hubakc".to_string(),
             user_map: Default::default(),
             ttl: 600,
-            timeout: 15
+            timeout: 15,
         }
     }
 }
@@ -43,15 +35,22 @@ impl Config {
 }
 
 fn get_pubkey_from_gh(gh_user_name: &str, timeout: u64) -> Result<String> {
-    let res = ureq::get(&format!("https://github.com/{gh_user_name}.keys"))
-        .timeout(Duration::from_secs(timeout))
-        .call()?
-        .into_string()?;
+    let res = minreq::get(&format!("https://github.com/{gh_user_name}.keys"))
+        .with_timeout(timeout)
+        .send()?
+        .as_str()?
+        .to_string();
     Ok(res)
 }
 
 fn main() -> Result<()> {
-    let Args { user_name } = Args::parse();
+    let args: Vec<String> = std::env::args().collect();
+    if args.contains(&"-h".to_string()) || args.contains(&"--help".to_string()) {
+        print!("A simple tool to grab ssh public key from GitHub\n\nUsage: hubakc <USERNAME>\n");
+        return Ok(());
+    }
+    ensure!(args.len() == 2, "expect exactly 1 args");
+    let user_name: &str = &args[1];
     let config = Config::from_path(CONFIG_PATH)
         .with_context(|| format!("failed to opening config file: {CONFIG_PATH}"))?;
     let cache_dir_path = Path::new(&config.cache_folder);
@@ -59,7 +58,7 @@ fn main() -> Result<()> {
         fs::create_dir_all(cache_dir_path)
             .with_context(|| format!("failed to create cache dir: {}", cache_dir_path.display()))?;
     }
-    if let Some(gh_user) = config.user_map.get(&user_name) {
+    if let Some(gh_user) = config.user_map.get(user_name) {
         let cache_path = PathBuf::from(format!("{}/{}", config.cache_folder, gh_user));
         if cache_path.exists() {
             let mod_time = cache_path
