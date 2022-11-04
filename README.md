@@ -3,8 +3,13 @@
 heavily inspired by https://github.com/sequencer/gitakc
 
 1. Put the config.toml in `/etc/hubakc/config.toml`, and add user map.
-2. Put the binary in `/usr/local/bin/hubakc`
-3. edit sshd config and set `AuthorizedKeysCommand /usr/local/bin/hubakc`
+2. Put the binary in `/usr/local/bin/hubakc`. Make sure that the owner is root and the permission is 755.
+3. Edit sshd config as below:
+
+```
+AuthorizedKeysCommand /usr/local/bin/hubakc
+AuthorizedKeysCommandUser nobody
+```
 
 ## Example
 
