@@ -2,9 +2,9 @@
 
 Heavily inspired by https://github.com/sequencer/gitakc . It allows someone login to the server using their **ssh keys on GitHub**.
 
-1. Put the config.toml in `/etc/hubakc/config.toml`, and add user map.
+1. Put config.toml in `/etc/hubakc/config.toml`, and add user map.
 2. Put the binary in `/usr/local/bin/hubakc`. Make sure that the owner is root and the permission is 755.
-3. Edit sshd config as below:
+3. Edit the sshd config as follows:
 
 ```
 AuthorizedKeysCommand /usr/local/bin/hubakc
