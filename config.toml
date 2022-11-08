@@ -1,5 +1,6 @@
 ttl = 3600
-timeout = 15
+timeout = 5
 cache_folder = "/tmp/hubakc"
 [user_map]
 mgt = "Enter-tainer"
+jumpuser = ["Enter-tainer", "Shawlleyw"]
