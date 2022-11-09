@@ -1,5 +1,6 @@
 use anyhow::{ensure, Context, Result};
 use itertools::Itertools;
+use minreq::Proxy;
 use serde::{Deserialize, Serialize};
 use std::{
     collections::HashMap,
@@ -19,6 +20,7 @@ struct Config {
     ttl: u64,
     timeout: u64,
     cache_folder: String,
+    http_proxy: Option<String>,
     user_map: HashMap<String, User>, // user -> gh user
 }
 
@@ -29,6 +31,7 @@ impl Default for Config {
             user_map: Default::default(),
             ttl: 600,
             timeout: 15,
+            http_proxy: None,
         }
     }
 }
@@ -40,29 +43,37 @@ impl Config {
     }
 }
 
-fn get_pubkey_from_gh(gh_user_name: &str, timeout: u64) -> Result<String> {
-    let res = minreq::get(&format!("https://github.com/{gh_user_name}.keys"))
-        .with_timeout(timeout)
-        .send()?
-        .as_str()?
-        .to_string();
+fn get_pubkey_from_gh(gh_user_name: &str, timeout: u64, proxy: Option<Proxy>) -> Result<String> {
+    let req = if let Some(proxy) = proxy {
+        minreq::get(&format!("https://github.com/{gh_user_name}.keys"))
+            .with_timeout(timeout)
+            .with_proxy(proxy)
+    } else {
+        minreq::get(&format!("https://github.com/{gh_user_name}.keys")).with_timeout(timeout)
+    };
+    let res = req.send()?.as_str()?.to_string();
     Ok(res)
 }
 
 fn get_pubkey_for_single(config: &Config, gh_user_name: &str) -> Result<String> {
     let cache_path = PathBuf::from(format!("{}/{}", config.cache_folder, gh_user_name));
+    let proxy = if let Some(ref proxy) = config.http_proxy {
+        Some(Proxy::new(proxy)?)
+    } else {
+        None
+    };
     if cache_path.exists() {
         let mod_time = cache_path
             .metadata()
             .with_context(|| format!("failed to read metadata: {}", cache_path.display()))?
             .modified()?;
         if SystemTime::now().duration_since(mod_time)?.as_secs() <= config.ttl
-            || get_pubkey_from_gh(gh_user_name, config.timeout).is_err()
+            || get_pubkey_from_gh(gh_user_name, config.timeout, proxy.clone()).is_err()
         {
             return Ok(fs::read_to_string(cache_path)?);
         }
     }
-    let keys = get_pubkey_from_gh(gh_user_name, config.timeout)?;
+    let keys = get_pubkey_from_gh(gh_user_name, config.timeout, proxy)?;
     fs::write(&cache_path, &keys).with_context(|| {
         format!(
             "failed to write keys to cache file: {}",

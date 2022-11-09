@@ -15,16 +15,17 @@ AuthorizedKeysCommandUser nobody
 
 Given the config file `config.toml`
 
-```
+```toml
 ttl = 3600
 timeout = 5
 cache_folder = "/tmp/hubakc"
 [user_map]
+# http_proxy = "127.0.0.1:1080"
 mgt = "Enter-tainer"
 jumpuser = ["Enter-tainer", "Shawlleyw"]
 ```
 
-```bssh
+```bash
 > hubakc mgt
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJgIynaQvTeYZ5iPigLnYRkRThxE04U7ACjuHRkQBAk+
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL2C/osNvVrilQDE3T/tTK9TRQ0+xVSbFU6wN5oIr2Fv
