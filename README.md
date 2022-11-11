@@ -19,8 +19,8 @@ Given the config file `config.toml`
 ttl = 3600
 timeout = 5
 cache_folder = "/tmp/hubakc"
-[user_map]
 # http_proxy = "127.0.0.1:1080"
+[user_map]
 mgt = "Enter-tainer"
 jumpuser = ["Enter-tainer", "Shawlleyw"]
 ```
