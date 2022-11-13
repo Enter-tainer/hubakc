@@ -2,7 +2,8 @@
 name = "hubakc"
 version = "0.1.5"
 edition = "2021"
-
+description = "Authorize an ssh session using your keys on GitHub."
+license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
