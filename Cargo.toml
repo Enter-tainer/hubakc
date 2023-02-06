@@ -10,7 +10,7 @@ license = "MIT"
 minreq = { version = "2.6.0", features = ["https-native", "proxy"] }
 serde = { version = "1.0", features = ["derive"] }
 toml = "0.5.9"
-anyhow = "1.0.66"
+anyhow = "1.0.69"
 itertools = "0.10.5"
 
 [profile.release]
