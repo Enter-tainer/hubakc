@@ -45,11 +45,11 @@ impl Config {
 
 fn get_pubkey_from_gh(gh_user_name: &str, timeout: u64, proxy: Option<Proxy>) -> Result<String> {
     let req = if let Some(proxy) = proxy {
-        minreq::get(&format!("https://github.com/{gh_user_name}.keys"))
+        minreq::get(format!("https://github.com/{gh_user_name}.keys"))
             .with_timeout(timeout)
             .with_proxy(proxy)
     } else {
-        minreq::get(&format!("https://github.com/{gh_user_name}.keys")).with_timeout(timeout)
+        minreq::get(format!("https://github.com/{gh_user_name}.keys")).with_timeout(timeout)
     };
     let res = req.send()?.as_str()?.to_string();
     Ok(res)

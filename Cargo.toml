@@ -1,17 +1,17 @@
 [package]
 name = "hubakc"
-version = "0.1.5"
+version = "0.1.6"
 edition = "2021"
 description = "Authorize an ssh session using your keys on GitHub."
 license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-minreq = { version = "2.6.0", features = ["https-native", "proxy"] }
+minreq = { version = "2.11.0", features = ["https-native", "proxy"] }
 serde = { version = "1.0", features = ["derive"] }
-toml = "0.5.9"
-anyhow = "1.0.66"
-itertools = "0.10.5"
+toml = "0.8.10"
+anyhow = "1.0.80"
+itertools = "0.12.1"
 
 [profile.release]
 panic = "abort"
