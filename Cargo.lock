@@ -99,7 +99,7 @@ checksum = "e5274423e17b7c9fc20b6e7e208532f9b19825d82dfd615708b70edd83df41f1"
 
 [[package]]
 name = "hubakc"
-version = "0.1.6"
+version = "0.1.7"
 dependencies = [
  "anyhow",
  "itertools",
