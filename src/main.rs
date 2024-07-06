@@ -1,7 +1,7 @@
 use anyhow::{ensure, Context, Result};
 use itertools::Itertools;
 use minreq::Proxy;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use std::{
     collections::HashMap,
     fs,
@@ -9,13 +9,13 @@ use std::{
     time::SystemTime,
 };
 const CONFIG_PATH: &str = "/etc/hubakc/config.toml";
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Deserialize)]
 #[serde(untagged)]
 enum User {
     Single(String),
     List(Vec<String>),
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Deserialize)]
 struct Config {
     ttl: u64,
     timeout: u64,
