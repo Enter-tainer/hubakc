@@ -7,7 +7,7 @@ license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-minreq = { version = "2.11.2", features = ["https-native", "proxy"] }
+minreq = { version = "2.12.0", features = ["https-rustls", "proxy"] }
 serde = { version = "1.0", features = ["derive"] }
 toml = { version = "0.8", features = ["parse"] }
 anyhow = "1"
